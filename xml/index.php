@@ -7,19 +7,19 @@ use atk4\data\Persistence;
 use atk4\data\Persistence\Array_;
 use atk4\schema\Migration;
 use atk4\ui\App;
-use atk4\ui\Layout\Admin;
+use atk4\ui\jsToast;
 use atk4\ui\Layout\Generic;
 use atk4\ui\Menu;
 use atk4\ui\Message;
 use atk4\ui\Table;
 
-require 'vendor/autoload.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
 $file = 'file.xml';
 
 $dsn = 'mysql://127.0.0.1:3306/test';
-$usr = 'user';
-$pwd = 'pass';
+$usr = 'atk4_test';
+$pwd = 'atk4_pass';
 
 class Book extends Model
 {
@@ -54,14 +54,29 @@ foreach ($xml->book as $element) {
 $app = new App(['title' => 'test xml']);
 $app->initLayout(Generic::class);
 
-Menu::addTo($app)->addClass('inverted')->addItem('Create Table in DB')
+$menu = Menu::addTo($app)->addClass('inverted');
+$menu->addItem('Create Table in DB')
     ->on('click', function ($v) use ($dsn, $usr, $pwd) {
         $persistence = Persistence::connect($dsn, $usr, $pwd);
 
-        return new Message([
-            'label' => 'Migration',
-            'text'  => Migration::getMigration(new Book($persistence))->migrate(),
-        ]);
+        $msg = Message::addTo($v,['Migration']);
+        $msg->text = Migration::getMigration(new Book($persistence))->migrate();
+
+        return $msg;
+    });
+
+
+$menu->addItem('Populate DB Table')
+    ->on('click', function ($v) use ($dsn, $usr, $pwd, $model) {
+
+        $persistence = Persistence::connect($dsn, $usr, $pwd);
+        $model_db = new Book($persistence);
+        foreach($model->getIterator() as $m) {
+            $model_db->tryLoad($m->id);
+            $model_db->save($m);
+        }
+
+        return new jsToast('Successful Populate DB Table');
     });
 
 Table::addTo($app)->addClass('tiny')->setModel($model);

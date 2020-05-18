@@ -1,11 +1,11 @@
 {
-  "name": "abbadon1334/test_xml",
-  "description": "",
+  "name": "abbadon1334/atk4-playground",
+  "description": "ATK4 unofficial playground",
   "type": "library",
   "license": "MIT",
   "authors": [
     {
-      "name": "Abbadon1334",
+      "name": "Francesco Danti aka Abbadon1334",
       "email": "fdanti@gmail.com"
     }
   ],
