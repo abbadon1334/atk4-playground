@@ -11,7 +11,10 @@
   ],
   "minimum-stability": "dev",
   "require": {
-    "atk4/ui": "2.3.5",
+    "atk4/ui": "dev-develop",
     "ext-simplexml": "*"
+  },
+  "scripts" : {
+    "serve" : "php -S 127.0.0.1:8080 -t playground"
   }
 }
