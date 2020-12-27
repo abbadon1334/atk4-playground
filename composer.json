@@ -11,8 +11,7 @@
   ],
   "minimum-stability": "dev",
   "require": {
-    "atk4/schema": "^2.0",
-    "atk4/ui": "^2.0",
+    "atk4/ui": "2.3.5",
     "ext-simplexml": "*"
   }
 }
